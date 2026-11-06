@@ -70,12 +70,12 @@ environment:
 
 dependencies:
   analysis_server_plugin: ^0.3.0
-  analyzer: ^8.0.0
-  analyzer_plugin: ^0.13.0
+  analyzer: '>=8.0.0 <20.0.0'
+  analyzer_plugin: '>=0.13.0 <1.0.0'
 
 dev_dependencies:
   analyzer_testing: ^0.4.0
-  lints: ^5.0.0
+  lints: '>=5.0.0 <7.0.0'
   test: ^1.25.0
   test_reflective_loader: ^0.6.0
 ```
