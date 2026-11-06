@@ -283,11 +283,13 @@ class WrapWithTryCatchAssist extends ResolvedCorrectionProducer {
     final statement = node.thisOrAncestorOfType<Statement>();
     if (statement == null || statement is Block) return;
 
+    final statementText = utils.getNodeText(statement);
+
     await builder.addDartFileEdit(file, (fileBuilder) {
       fileBuilder.addReplacement(range.node(statement), (editBuilder) {
         editBuilder.writeln('try {');
         editBuilder.write('  ');
-        editBuilder.writeln(fileBuilder.utils.getNodeText(statement));
+        editBuilder.writeln(statementText);
         editBuilder.writeln('} catch (e, stackTrace) {');
         editBuilder.writeln('  rethrow;');
         editBuilder.write('}');
@@ -300,7 +302,9 @@ class WrapWithTryCatchAssist extends ResolvedCorrectionProducer {
 
   // 7. test/<rule_name>_test.dart
   File('${targetDir.path}/test/${ruleName}_test.dart').writeAsStringSync(
-    '''import 'package:analyzer_testing/analysis_rule/analysis_rule.dart';
+    '''// ignore_for_file: non_constant_identifier_names
+
+import 'package:analyzer_testing/analysis_rule/analysis_rule.dart';
 import 'package:$pkgName/src/rules/$ruleName.dart';
 import 'package:test_reflective_loader/test_reflective_loader.dart';
 

@@ -302,10 +302,11 @@ class MyAssistProducer extends ResolvedCorrectionProducer {
   @override
   Future<void> compute(ChangeBuilder builder) async {
     final targetNode = node;
+    final nodeText = utils.getNodeText(targetNode);
 
     await builder.addDartFileEdit(file, (fileBuilder) {
       fileBuilder.addReplacement(range.node(targetNode), (editBuilder) {
-        editBuilder.write('wrap(${fileBuilder.utils.getNodeText(targetNode)})');
+        editBuilder.write('wrap($nodeText)');
       });
     });
   }
@@ -320,6 +321,8 @@ Use `package:analyzer_testing` to write isolated, deterministic unit tests witho
 
 ```dart
 // test/my_rule_test.dart
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:analyzer_testing/analysis_rule/analysis_rule.dart';
 import 'package:test_reflective_loader/test_reflective_loader.dart';
 import 'package:my_analyzer_plugin/src/rules/my_rule.dart';

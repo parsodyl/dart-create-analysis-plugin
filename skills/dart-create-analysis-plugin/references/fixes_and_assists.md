@@ -94,10 +94,12 @@ class WrapWithBuilderAssist extends ResolvedCorrectionProducer {
     final targetNode = node.thisOrAncestorOfType<InstanceCreationExpression>();
     if (targetNode == null) return;
 
+    final nodeText = utils.getNodeText(targetNode);
+
     await builder.addDartFileEdit(file, (fileBuilder) {
       fileBuilder.addReplacement(range.node(targetNode), (editBuilder) {
         editBuilder.write('CustomBuilder(builder: (context) => ');
-        editBuilder.write(fileBuilder.utils.getNodeText(targetNode));
+        editBuilder.write(nodeText);
         editBuilder.write(')');
       });
     });
