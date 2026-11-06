@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  analyze-and-test:
+    name: Analyze Skill & Verify Scaffolder
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install skill workspace dependencies
+        run: dart pub get
+
+      - name: Analyze scaffolding script
+        run: dart analyze --fatal-infos
+
+      - name: Scaffold sample analyzer plugin
+        run: dart skills/dart-create-analysis-plugin/scripts/scaffold_plugin.dart --name company_lints --output-dir /tmp/company_lints
+
+      - name: Resolve dependencies in scaffolded plugin
+        working-directory: /tmp/company_lints
+        run: dart pub get
+
+      - name: Analyze scaffolded plugin
+        working-directory: /tmp/company_lints
+        run: dart analyze --fatal-infos
+
+      - name: Run unit tests in scaffolded plugin
+        working-directory: /tmp/company_lints
+        run: dart test

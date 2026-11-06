@@ -1,0 +1,45 @@
+{
+  "skill_name": "dart-create-analysis-plugin",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to create a custom analysis plugin in my Flutter project to enforce that no class extending StatelessWidget or StatefulWidget directly calls Navigator.of(context).push without a route builder helper. How do I scaffold the plugin, implement this rule, write unit tests, and enable it in analysis_options.yaml?",
+      "expected_output": "Scaffolds a plugin package with analysis_server_plugin, implements an AnalysisRule inspecting ClassDeclaration/MethodInvocation with AST visitor and semantic type checking, provides unit test using analyzer_testing, and configures the host analysis_options.yaml under plugins:.",
+      "assertions": [
+        "Uses package:analysis_server_plugin and does not use custom_lint or legacy analyzer_plugin server bootstrapping",
+        "Exposes a top-level `final plugin = ...` variable in lib/main.dart extending Plugin",
+        "Declares LintCode as a `static const` field on the AnalysisRule subclass",
+        "Uses `thisOrAncestorOfType<ClassDeclaration>()` instead of direct parent casting",
+        "Registers the plugin under top-level `plugins:` in analysis_options.yaml (not nested under `analyzer:`)",
+        "Writes unit tests extending AnalysisRuleTest from package:analyzer_testing"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We need a custom lint rule and quick fix that warns whenever someone defines an empty catch clause 'catch (e) {}' in our Dart codebase and offers a quick fix to insert a rethrow or logging statement. How do we write the rule and ResolvedCorrectionProducer fix?",
+      "expected_output": "Implements an AnalysisRule visiting CatchClause, checks body.statements.isEmpty, provides a ResolvedCorrectionProducer subclass with {required super.context}, CorrectionApplicability, and FixKind using ChangeBuilder to insert a statement, and registers both in lib/main.dart.",
+      "assertions": [
+        "Implements an AnalysisRule using registry.addCatchClause in registerNodeProcessors",
+        "Checks `node.body.statements.isEmpty` and reports at the catch/on token",
+        "Subclasses ResolvedCorrectionProducer with constructor `{required super.context}`",
+        "Overrides `CorrectionApplicability get applicability` and `FixKind get fixKind`",
+        "Inserts an actual statement (such as `rethrow;` or a logger call) so `body.statements.isEmpty` is no longer true after applying the fix",
+        "Registers the fix via `registry.registerFixForRule(Rule.code, FixProducer.new)` in lib/main.dart"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "How do we write an IDE quick assist in a Dart analysis plugin that allows developers to wrap any selected statement or expression in a try-catch block or builder?",
+      "expected_output": "Implements a ResolvedCorrectionProducer subclass with {required super.context}, CorrectionApplicability, and AssistKind, registers it via registry.registerAssist, and uses ChangeBuilder with range.node to wrap the target AST node.",
+      "assertions": [
+        "Subclasses ResolvedCorrectionProducer with constructor `{required super.context}`",
+        "Overrides `AssistKind get assistKind` and `CorrectionApplicability get applicability`",
+        "Uses `builder.addDartFileEdit` and `fileBuilder.addReplacement(range.node(...), ...)` to wrap the target AST node",
+        "Registers the assist in lib/main.dart via `registry.registerAssist(AssistProducer.new)`"
+      ],
+      "files": []
+    }
+  ]
+}
