@@ -23,7 +23,7 @@ void registerNodeProcessors(RuleVisitorRegistry registry, RuleContext context) {
 ### Common AST Node Types
 | AST Node | What It Represents | Useful Properties |
 | :--- | :--- | :--- |
-| `ClassDeclaration` | `class Foo<T> extends Bar {}` | `name`, `members`, `extendsClause`, `withClause`, `implementsClause` |
+| `ClassDeclaration` | `class Foo<T> extends Bar {}` | `namePart.typeName`, `body.members`, `extendsClause`, `withClause`, `implementsClause` |
 | `MethodDeclaration` | Instance or static method | `name`, `parameters`, `returnType`, `body`, `isStatic`, `isGetter` |
 | `ConstructorDeclaration` | Class constructor | `name`, `initializers`, `parameters`, `factoryKeyword` |
 | `FieldDeclaration` | Variable inside a class | `fields.variables`, `isStatic`, `fields.type` |
@@ -124,7 +124,7 @@ void visitMethodInvocation(MethodInvocation node) {
 
   // Check if target is a BuildContext
   if (type.element?.name == 'BuildContext' &&
-      type.element?.library.identifier.startsWith('package:flutter/') == true) {
+      type.element?.library?.identifier.startsWith('package:flutter/') == true) {
     // Flag prohibited operations on BuildContext
   }
 }
@@ -167,7 +167,7 @@ final isImmutable = classElement?.metadata.hasImmutable ?? false;
 
 // Example usage:
 if (!hasAnnotation(classDeclaration, 'immutable')) {
-  rule.reportAtToken(classDeclaration.name);
+  rule.reportAtToken(classDeclaration.namePart.typeName);
 }
 ```
 

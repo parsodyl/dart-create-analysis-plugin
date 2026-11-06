@@ -156,6 +156,7 @@ class MyRule extends AnalysisRule {
     'Problem description highlighting {0}.',
     correctionMessage: 'Try correcting the issue this way.',
     uniqueName: 'LintCode.my_rule',
+    // Optional: defaults to DiagnosticSeverity.INFO; can be set to .WARNING or .ERROR
   );
 
   MyRule()
@@ -340,8 +341,7 @@ class MyRuleTest extends AnalysisRuleTest {
     rule = MyRule();
 
     // Stub external package dependencies or base types
-    newPackage('my_core')
-      ..addFile('lib/my_core.dart', r'''
+    newPackage('my_core').addFile('lib/my_core.dart', r'''
 abstract class BaseType {}
 ''');
 
