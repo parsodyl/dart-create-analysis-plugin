@@ -29,7 +29,7 @@ Most AI models were trained on deprecated `analyzer_plugin` (JSON-RPC) or third-
 Because `SKILL.md` is housed cleanly inside [`skills/dart-create-analysis-plugin/`](skills/dart-create-analysis-plugin/), skill installers only copy the skill payload into your agent configuration without polluting it with repository metadata.
 
 ### 1. Vercel Skills CLI (`npx skills`)
-Supports **Antigravity**, **Claude Code**, **Cursor**, **GitHub Copilot**, **Windsurf**, **Cline**, and **Codex**:
+Supports **Antigravity**, **Claude Code**, **Codex**, **Cursor**, **GitHub Copilot**, **Cline**, and many others:
 
 ```bash
 # Install into your current project workspace
@@ -62,7 +62,7 @@ git clone https://github.com/parsodyl/dart-create-analysis-plugin.git
 
 # Antigravity (project-level or global)
 cp -R dart-create-analysis-plugin/skills/dart-create-analysis-plugin .agents/skills/
-cp -R dart-create-analysis-plugin/skills/dart-create-analysis-plugin ~/.gemini/antigravity/skills/
+cp -R dart-create-analysis-plugin/skills/dart-create-analysis-plugin ~/.gemini/config/skills/
 
 # Claude Code (project-level or global)
 cp -R dart-create-analysis-plugin/skills/dart-create-analysis-plugin .claude/skills/
@@ -71,27 +71,19 @@ cp -R dart-create-analysis-plugin/skills/dart-create-analysis-plugin ~/.claude/s
 
 ---
 
-## 🗂️ Repository Layout
+## 🗂️ Skill Layout
 
 ```text
 dart-create-analysis-plugin/
-├── README.md                                        # Documentation & installation guide
-├── LICENSE                                          # MIT License
-├── pubspec.yaml                                     # Dart workspace config for analyzing skill scripts
-├── analysis_options.yaml                            # Lint configuration for the repository
-├── .github/workflows/
-│   └── ci.yml                                       # GitHub Actions CI verifying script & scaffolded plugin
-└── skills/
-    └── dart-create-analysis-plugin/                 # Installable Agent Skill package
-        ├── SKILL.md                                 # Core instructions & API templates
-        ├── scripts/
-        │   └── scaffold_plugin.dart                 # 1-command Dart CLI plugin generator
-        ├── references/
-        │   ├── ast_and_type_hierarchy.md            # Deep AST traversal & Flutter type checks
-        │   ├── fixes_and_assists.md                 # Quick Fixes, Quick Assists & ChangeBuilder
-        │   └── troubleshooting_and_faq.md           # AOT isolate runtime, debugging & cache management
-        └── evals/
-            └── evals.json                           # Evaluation prompts & assertions
+├── SKILL.md                                 # Core instructions & API templates
+├── scripts/
+│   └── scaffold_plugin.dart                 # 1-command Dart CLI plugin generator
+├── references/
+│   ├── ast_and_type_hierarchy.md            # Deep AST traversal & Flutter type checks
+│   ├── fixes_and_assists.md                 # Quick Fixes, Quick Assists & ChangeBuilder
+│   └── troubleshooting_and_faq.md           # AOT isolate runtime, debugging & cache management
+└── evals/
+    └── evals.json                           # Evaluation prompts & assertions
 ```
 
 ---
